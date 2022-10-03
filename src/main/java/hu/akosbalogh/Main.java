@@ -1,4 +1,9 @@
-package hu.akosbalogh;public class Main {
+package hu.akosbalogh;
+
+/**
+ * Javadoc.
+ */
+public class Main {
     public static void main(String[] args) {
         System.out.println("Hello world!");
     }
