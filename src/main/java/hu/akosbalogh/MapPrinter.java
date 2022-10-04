@@ -1,13 +1,8 @@
-package hu.akosbalogh.ui;
+package hu.akosbalogh;
 
-import hu.akosbalogh.model.Map;
+import hu.akosbalogh.Map;
 
 public class MapPrinter {
-    /*
-     private static final String HORIZONTAL_SEPARATOR = "-";
-     private static final String VERTICAL_SEPARATOR = " | ";
-    */
-
     private final int boxWidth;
     private final int boxHeight;
     private final Map map;
@@ -18,7 +13,7 @@ public class MapPrinter {
         this.map = map;
     }
 
-    public void printMap(Map map) {
+    public static void printMap(Map map) {
         char[][] mapToPrint = map.getMap();
         for (int i = 0; i < map.getNumberOfColumns(); i++) {
             for (int j = 0; j < map.getNumberOfRows(); j++) {

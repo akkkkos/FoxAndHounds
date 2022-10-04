@@ -1,4 +1,4 @@
-package hu.akosbalogh.model;
+package hu.akosbalogh;
 
 import java.util.Arrays;
 
