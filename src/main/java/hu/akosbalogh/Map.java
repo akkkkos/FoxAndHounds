@@ -6,12 +6,12 @@ public class Map {
 
     private final int numberOfRows;
     private final int numberOfColumns;
-    private final char[][] map;
+    private char[][] mapAsChars;
 
     public Map(int numberOfRows, int numberOfColumns, char[][] map) {
         this.numberOfRows = numberOfRows;
         this.numberOfColumns = numberOfColumns;
-        this.map = map;
+        this.mapAsChars = map;
     }
 
     public int getNumberOfRows() {
@@ -22,8 +22,12 @@ public class Map {
         return numberOfColumns;
     }
 
-    public char[][] getMap() {
-        return deepCopy(map);
+    public char[][] getMapAsChars() {
+        return deepCopy(mapAsChars);
+    }
+
+    public void setMapAsChars(char[][] mapAsChars) {
+        this.mapAsChars = mapAsChars;
     }
 
     private char[][] deepCopy(char[][] array) {

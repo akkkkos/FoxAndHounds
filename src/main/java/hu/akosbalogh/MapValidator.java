@@ -32,16 +32,16 @@ public class MapValidator {
             return false;
         }
 
-        if (move.equals("ur") && map.getMap()[srI - 1][scI + 1] != 'O') {
+        if (move.equals("ur") && map.getMapAsChars()[srI - 1][scI + 1] != 'O') {
             return false;
         }
-        if (move.equals("dr") && map.getMap()[srI + 1][scI + 1] != 'O') {
+        if (move.equals("dr") && map.getMapAsChars()[srI + 1][scI + 1] != 'O') {
             return false;
         }
-        if (move.equals("ul") && map.getMap()[srI - 1][scI - 1] != 'O') {
+        if (move.equals("ul") && map.getMapAsChars()[srI - 1][scI - 1] != 'O') {
             return false;
         }
-        if (move.equals("dl") && map.getMap()[srI + 1][scI - 1] != 'O') {
+        if (move.equals("dl") && map.getMapAsChars()[srI + 1][scI - 1] != 'O') {
             return false;
         }
 
@@ -56,7 +56,7 @@ public class MapValidator {
      */
     public boolean isWolfWinner(Map map) {
         for (int i = 1; i < map.getNumberOfColumns() - 1; i += 2) {
-            if (map.getMap()[0][i] == 'W') {
+            if (map.getMapAsChars()[0][i] == 'W') {
                 return true;
             }
         }
@@ -75,41 +75,41 @@ public class MapValidator {
 
     private boolean wolfHasNoAvailableSpace(Map map) {
         int n = 0;
-        int wolfPosY = getWolfPosY(map);
-        int wolfPosX = getWolfPosX(map);
+        int wolfColumnIndex = getWolfColumnIndex(map);
+        int wolfRowIndex = getWolfRowIndex(map);
 
-        if (isSpecifiedSpaceAvailable(map, wolfPosY, wolfPosX, "ur")) {
+        if (!isSpecifiedSpaceAvailable(map, wolfRowIndex, wolfColumnIndex, "ur")) {
             n++;
         }
-        if (isSpecifiedSpaceAvailable(map, wolfPosY, wolfPosX, "ul")) {
+        if (!isSpecifiedSpaceAvailable(map, wolfRowIndex, wolfColumnIndex, "ul")) {
             n++;
         }
-        if (isSpecifiedSpaceAvailable(map, wolfPosY, wolfPosX, "dr")) {
+        if (!isSpecifiedSpaceAvailable(map, wolfRowIndex, wolfColumnIndex, "dr")) {
             n++;
         }
-        if (isSpecifiedSpaceAvailable(map, wolfPosY, wolfPosX, "dl")) {
+        if (!isSpecifiedSpaceAvailable(map, wolfRowIndex, wolfColumnIndex, "dl")) {
             n++;
         }
 
         return n == 4;
     }
 
-    private int getWolfPosX(Map map) {
-        for (int i = 0; i < map.getNumberOfRows() - 1; i++) {
-            for (int j = 0; j < map.getNumberOfColumns() - 1; j++) {
-                if (map.getMap()[i][j] == 'W') {
-                    return j;
+    public int getWolfRowIndex(Map map) {
+        for (int i = 0; i < map.getNumberOfRows(); i++) {
+            for (int j = 0; j < map.getNumberOfColumns(); j++) {
+                if (map.getMapAsChars()[i][j] == 'W') {
+                    return i;
                 }
             }
         }
         return 0;
     }
 
-    private int getWolfPosY(Map map) {
-        for (int i = 0; i < map.getNumberOfRows() - 1; i++) {
-            for (int j = 0; j < map.getNumberOfColumns() - 1; j++) {
-                if (map.getMap()[i][j] == 'W') {
-                    return i;
+    public int getWolfColumnIndex(Map map) {
+        for (int i = 0; i < map.getNumberOfRows(); i++) {
+            for (int j = 0; j < map.getNumberOfColumns(); j++) {
+                if (map.getMapAsChars()[i][j] == 'W') {
+                    return j;
                 }
             }
         }
