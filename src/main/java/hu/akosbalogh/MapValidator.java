@@ -49,14 +49,14 @@ public class MapValidator {
     }
 
     /**
-     * Checks if the Wolf is winner.
+     * Checks if the Fox won.
      *
      * @param map The map.
-     * @return Is it?
+     * @return Returns true if the Fox won.
      */
-    public boolean isWolfWinner(Map map) {
+    public boolean isFoxWinner(Map map) {
         for (int i = 1; i < map.getNumberOfColumns() - 1; i += 2) {
-            if (map.getMapAsChars()[0][i] == 'W') {
+            if (map.getMapAsChars()[0][i] == 'F') {
                 return true;
             }
         }
@@ -64,40 +64,61 @@ public class MapValidator {
     }
 
     /**
-     * Checks if the Hounds are the winner.
+     * Checks if the Hounds won.
      *
      * @param map The map.
-     * @return Are they?
+     * @return Returns true if the Hounds won.
      */
     public boolean isHoundWinner(Map map) {
-        return wolfHasNoAvailableSpace(map);
+        return foxHasNoAvailableSpace(map);
     }
 
-    private boolean wolfHasNoAvailableSpace(Map map) {
+    private boolean foxHasNoAvailableSpace(Map map) {
         int n = 0;
-        int wolfColumnIndex = getWolfColumnIndex(map);
-        int wolfRowIndex = getWolfRowIndex(map);
+        int foxColumnIndex = searchFoxColumnIndex(map);
+        int foxRowIndex = searchFoxRowIndex(map);
 
-        if (!isSpecifiedSpaceAvailable(map, wolfRowIndex, wolfColumnIndex, "ur")) {
+        if (!isSpecifiedSpaceAvailable(map, foxRowIndex, foxColumnIndex, "ur")) {
             n++;
         }
-        if (!isSpecifiedSpaceAvailable(map, wolfRowIndex, wolfColumnIndex, "ul")) {
+        if (!isSpecifiedSpaceAvailable(map, foxRowIndex, foxColumnIndex, "ul")) {
             n++;
         }
-        if (!isSpecifiedSpaceAvailable(map, wolfRowIndex, wolfColumnIndex, "dr")) {
+        if (!isSpecifiedSpaceAvailable(map, foxRowIndex, foxColumnIndex, "dr")) {
             n++;
         }
-        if (!isSpecifiedSpaceAvailable(map, wolfRowIndex, wolfColumnIndex, "dl")) {
+        if (!isSpecifiedSpaceAvailable(map, foxRowIndex, foxColumnIndex, "dl")) {
             n++;
         }
 
         return n == 4;
     }
 
-    public int getWolfRowIndex(Map map) {
+    boolean noValidMoveCanBeMadeAsHound(int[][] houndPositions, Map map) {
+        boolean validMoveCanBeMade = false;
+
+        for (int[] houndPos : houndPositions) {
+            if (isSpecifiedSpaceAvailable(map, houndPos[0], houndPos[1], "dr")) {
+                validMoveCanBeMade = true;
+            }
+            if (isSpecifiedSpaceAvailable(map, houndPos[0], houndPos[1], "dl")) {
+                validMoveCanBeMade = true;
+            }
+        }
+
+        return !validMoveCanBeMade;
+    }
+
+    /**
+     * Todo.
+     *
+     * @param map Todo.
+     * @return Todo.
+     */
+    public int searchFoxRowIndex(Map map) {
         for (int i = 0; i < map.getNumberOfRows(); i++) {
             for (int j = 0; j < map.getNumberOfColumns(); j++) {
-                if (map.getMapAsChars()[i][j] == 'W') {
+                if (map.getMapAsChars()[i][j] == 'F') {
                     return i;
                 }
             }
@@ -105,10 +126,16 @@ public class MapValidator {
         return 0;
     }
 
-    public int getWolfColumnIndex(Map map) {
+    /**
+     * Todo.
+     *
+     * @param map Todo.
+     * @return Todo.
+     */
+    public int searchFoxColumnIndex(Map map) {
         for (int i = 0; i < map.getNumberOfRows(); i++) {
             for (int j = 0; j < map.getNumberOfColumns(); j++) {
-                if (map.getMapAsChars()[i][j] == 'W') {
+                if (map.getMapAsChars()[i][j] == 'F') {
                     return j;
                 }
             }

@@ -2,8 +2,28 @@ package hu.akosbalogh;
 
 import java.util.Scanner;
 
+/**
+ * Todo.
+ */
 public class InputController {
-    public String GetUserInput(Map map) {
+
+    /**
+     * Todo.
+     *
+     * @return Todo.
+     */
+    public int getUserInputBeforeGame() {
+        // TODO Ask for map size and others.
+        return 8;
+    }
+
+    /**
+     * Todo.
+     *
+     * @param map Todo.
+     * @return Todo.
+     */
+    public String getUserInputForGame(Map map) {
         MapValidator mapValidator = new MapValidator();
         Scanner scanner = new Scanner(System.in);
         String input = scanner.next();
@@ -17,15 +37,16 @@ public class InputController {
             } else {
                 if (input.charAt(0) != 'u' && input.charAt(0) != 'd') {
                     System.out.println("Incorrect move.");
-                    System.out.println(input.charAt(0));
                     input = scanner.next();
                 } else {
                     if (input.charAt(1) != 'r' && input.charAt(1) != 'l') {
                         System.out.println("Incorrect move.");
-                        System.out.println(input.charAt(1));
                         input = scanner.next();
                     } else {
-                        if (!mapValidator.isSpecifiedSpaceAvailable(map,mapValidator.getWolfRowIndex(map), mapValidator.getWolfColumnIndex(map), input)) {
+                        if (!mapValidator.isSpecifiedSpaceAvailable(map,
+                                mapValidator.searchFoxRowIndex(map),
+                                mapValidator.searchFoxColumnIndex(map),
+                                input)) {
 
                             System.out.println("Space Unavailable for move.");
                             input = scanner.next();

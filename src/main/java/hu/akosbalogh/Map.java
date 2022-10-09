@@ -2,6 +2,9 @@ package hu.akosbalogh;
 
 import java.util.Arrays;
 
+/**
+ * Todo.
+ */
 public class Map {
 
     private final int numberOfRows;

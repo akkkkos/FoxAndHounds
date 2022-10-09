@@ -6,7 +6,7 @@
 
     <groupId>hu.akosbalogh</groupId>
     <artifactId>FoxAndHounds</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.1</version>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
@@ -30,7 +30,7 @@
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.4.1</version>
+            <version>1.4.3</version>
         </dependency>
     </dependencies>
     <build>
@@ -86,6 +86,9 @@
                 <configuration>
                     <excludes>
                         <exclude>hu/akosbalogh/Main.*</exclude>
+                        <exclude>hu/akosbalogh/Map.*</exclude>
+                        <exclude>hu/akosbalogh/GameController.*</exclude>
+                        <exclude>hu/akosbalogh/MapPrinter.*</exclude>
                     </excludes>
                 </configuration>
                 <executions>

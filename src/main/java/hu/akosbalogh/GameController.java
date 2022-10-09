@@ -1,29 +1,35 @@
 package hu.akosbalogh;
 
+/**
+ * Fox and Hounds game controller service.
+ */
 public class GameController {
 
     private boolean isRunning;
-    private MapController mapController;
-    private InputController inputController;
-    private MapValidator mapValidator;
-    private MapPrinter mapPrinter;
+    private final MapController mapController;
+    private final InputController inputController;
+    private final MapValidator mapValidator;
+    private final MapPrinter mapPrinter;
 
-    public GameController(MapController mapController, InputController inputController) {
-        this.mapController = mapController;
-        this.inputController = inputController;
+    public GameController() throws Exception {
+        this.inputController = new InputController();
+        int mapSize = inputController.getUserInputBeforeGame();
+        this.mapController = new MapController(mapSize);
         this.mapValidator = new MapValidator();
         this.mapPrinter = new MapPrinter();
         isRunning = true;
     }
 
-    public void StartGame() {
-        while(isRunning)
-        {
+    /**
+     * Start a Fox and Hounds game in the console with the specified Map and Input controllers.
+     */
+    public void startGame() {
+        while (isRunning) {
             mapPrinter.printMap(mapController.getMap());
-            String move = inputController.GetUserInput(mapController.getMap());
-            mapController.moveWolf(move);
+            String input = inputController.getUserInputForGame(mapController.getMap());
+            mapController.moveFox(input);
 
-            if (mapValidator.isWolfWinner(mapController.getMap())) {
+            if (mapValidator.isFoxWinner(mapController.getMap())) {
                 mapPrinter.printMap(mapController.getMap());
                 System.out.println("Win!");
                 isRunning = false;
