@@ -1,100 +1,65 @@
 package hu.akosbalogh;
 
+/*
+        String input = "ur";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+ */
+
+import hu.akosbalogh.input.InputController;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class InputControllerTest {
     @Test
-    public void specificInputShouldReturnCorrectly() throws Exception {
-        MapController mapController = new MapController(8);
-        mapController.moveFox("ur");
+    public void getUserInputShouldNotResultInException() {
+        String input = "start\n";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
 
         InputController inputController = new InputController();
 
-        String input = "ur";
-        InputStream in = new ByteArrayInputStream(input.getBytes());
-        System.setIn(in);
-        String result = inputController.getUserInputForGame(mapController.getMap());
-
-        assertEquals("ur", result);
-
-        input = "dr";
-        in = new ByteArrayInputStream(input.getBytes());
-        System.setIn(in);
-        result = inputController.getUserInputForGame(mapController.getMap());
-
-        assertEquals("dr", result);
-
-        input = "dl";
-        in = new ByteArrayInputStream(input.getBytes());
-        System.setIn(in);
-        result = inputController.getUserInputForGame(mapController.getMap());
-
-        assertEquals("dl", result);
-
-        input = "ul";
-        in = new ByteArrayInputStream(input.getBytes());
-        System.setIn(in);
-        result = inputController.getUserInputForGame(mapController.getMap());
-
-        assertEquals("ul", result);
+        assertDoesNotThrow(() -> {
+            inputController.getUserInput();
+        });
     }
 
     @Test
-    public void inputShouldOnlyReturnWhenInputIsRightLength() throws Exception {
-        MapController mapController = new MapController(8);
-        InputController inputController = new InputController();
-
-        String input = "ururur\nur";
+    public void getUserInputShouldReturnCorrectValues() {
+        String input = "test\nexit\nstart\nmove\ncommands\n";
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
-        String result = inputController.getUserInputForGame(mapController.getMap());
 
-        assertEquals("ur", result);
+        InputController inputController = new InputController();
+
+        assertEquals(inputController.getUserInput(), "unknown");
+        assertEquals(inputController.getUserInput(), "exit");
+        assertEquals(inputController.getUserInput(), "start");
+        assertEquals(inputController.getUserInput(), "move");
+        assertEquals(inputController.getUserInput(), "commands");
     }
 
     @Test
-    public void inputShouldOnlyReturnWhenGivenVerticalDirectionIsCorrect() throws Exception {
-        MapController mapController = new MapController(8);
-        InputController inputController = new InputController();
-
-        String input = "ir\nur";
+    public void userShouldOnlyBeAbleToPickCorrectMapSize() {
+        String input = "4\n14\n7\n8\n";
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
-        String result = inputController.getUserInputForGame(mapController.getMap());
 
-        assertEquals("ur", result);
+        InputController inputController = new InputController();
+        int mapSize = inputController.getMapSizeFromUser();
+        assertEquals(mapSize, 8);
     }
 
     @Test
-    public void inputShouldOnlyReturnWhenGivenHorizontalDirectionIsCorrect() throws Exception {
-        MapController mapController = new MapController(8);
+    public void isUserMoveCorrectFormatShouldReturnCorrectly() {
         InputController inputController = new InputController();
-
-        String input = "ui\nur";
-        InputStream in = new ByteArrayInputStream(input.getBytes());
-        System.setIn(in);
-        String result = inputController.getUserInputForGame(mapController.getMap());
-
-        assertEquals("ur", result);
+        assertFalse(inputController.isUserMoveCorrectFormat("testtesttesttesttest"));
+        assertFalse(inputController.isUserMoveCorrectFormat("move ar"));
+        assertFalse(inputController.isUserMoveCorrectFormat("move ua"));
+        assertTrue(inputController.isUserMoveCorrectFormat("move ur"));
     }
-
-    @Test
-    public void moveShouldNotBeMadeIfTargetSpaceIsUnavailable() throws Exception {
-        MapController mapController = new MapController(8);
-        InputController inputController = new InputController();
-
-        String input = "dl\nur";
-        InputStream in = new ByteArrayInputStream(input.getBytes());
-        System.setIn(in);
-        String result = inputController.getUserInputForGame(mapController.getMap());
-
-        assertEquals("ur", result);
-    }
-
-
 }

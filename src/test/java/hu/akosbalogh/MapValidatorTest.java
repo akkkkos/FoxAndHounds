@@ -1,5 +1,8 @@
 package hu.akosbalogh;
 
+import hu.akosbalogh.map.model.Map;
+import hu.akosbalogh.map.MapController;
+import hu.akosbalogh.map.validation.MapValidator;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -10,7 +13,8 @@ public class MapValidatorTest {
     public void searchFoxColumnIndexShouldReturnCorrectColumnIndex() throws Exception {
 
         MapValidator mapValidator = new MapValidator();
-        MapController mapController = new MapController(8);
+        MapController mapController = new MapController();
+        mapController.buildMap(8);
         mapController.moveFox("ur");
         mapController.moveFox("ur");
 
@@ -23,7 +27,8 @@ public class MapValidatorTest {
     @Test
     public void isHoundWinnerShouldReturnCorrectly() throws Exception {
         MapValidator mapValidator = new MapValidator();
-        MapController mapController = new MapController(6);
+        MapController mapController = new MapController();
+        mapController.buildMap(6);
 
         assertFalse(mapValidator.isHoundWinner(mapController.getMap()));
 
@@ -38,7 +43,8 @@ public class MapValidatorTest {
     @Test
     public void isFoxWinnerShouldReturnCorrectly() throws Exception {
         MapValidator mapValidator = new MapValidator();
-        MapController mapController = new MapController(6);
+        MapController mapController = new MapController();
+        mapController.buildMap(6);
 
         assertFalse(mapValidator.isFoxWinner(mapController.getMap()));
 

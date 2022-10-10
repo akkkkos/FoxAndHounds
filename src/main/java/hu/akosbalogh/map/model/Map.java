@@ -1,4 +1,4 @@
-package hu.akosbalogh;
+package hu.akosbalogh.map.model;
 
 import java.util.Arrays;
 

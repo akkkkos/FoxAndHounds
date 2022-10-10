@@ -1,6 +1,6 @@
 package hu.akosbalogh;
 
-import org.junit.jupiter.api.BeforeEach;
+import hu.akosbalogh.map.MapController;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -12,23 +12,27 @@ public class MapControllerTest {
     @Test
     public void buildingMapWithOddNumberForSizeShouldResultInException() {
         assertThrows(Exception.class,() -> {
-            MapController mapController = new MapController(7);
+            MapController mapController = new MapController();
+            mapController.buildMap(7);
         });
     }
 
     @Test
     public void buildingMapWithTooLargeOrTooSmallMapSizeShouldResultInException() {
         assertThrows(Exception.class,() -> {
-            MapController mapController = new MapController(14);
+            MapController mapController = new MapController();
+            mapController.buildMap(14);
         });
         assertThrows(Exception.class,() -> {
-            MapController mapController = new MapController(4);
+            MapController mapController = new MapController();
+            mapController.buildMap(4);
         });
     }
 
     @Test
     public void movingHoundRandomlyShouldChangeTheMap() throws Exception {
-        MapController mapController = new MapController(8);
+        MapController mapController = new MapController();
+        mapController.buildMap(8);
         char[][] oldMap = mapController.getMap().getMapAsChars();
         mapController.moveRandomHound();
         char[][] newMap = mapController.getMap().getMapAsChars();
@@ -52,7 +56,8 @@ public class MapControllerTest {
 
     @Test
     public void movingWithFoxShouldBeAbleToMoveFromOneSideToAnother() throws Exception {
-        MapController mapController = new MapController(6);
+        MapController mapController = new MapController();
+        mapController.buildMap(6);
         char[][] oldMap = mapController.getMap().getMapAsChars();
 
         mapController.moveFox("ur");

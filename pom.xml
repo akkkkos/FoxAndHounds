@@ -86,9 +86,7 @@
                 <configuration>
                     <excludes>
                         <exclude>hu/akosbalogh/Main.*</exclude>
-                        <exclude>hu/akosbalogh/Map.*</exclude>
-                        <exclude>hu/akosbalogh/GameController.*</exclude>
-                        <exclude>hu/akosbalogh/MapPrinter.*</exclude>
+                        <exclude>hu/akosbalogh/map/model/Map.*</exclude>
                     </excludes>
                 </configuration>
                 <executions>
