@@ -45,7 +45,7 @@ public class InputControllerTest {
 
     @Test
     public void userShouldOnlyBeAbleToPickCorrectMapSize() {
-        String input = "4\n14\n7\n8\n";
+        String input = "2\n14\n7\n8\n";
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
 

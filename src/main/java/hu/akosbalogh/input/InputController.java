@@ -61,19 +61,19 @@ public class InputController {
     /**
      * Gets the map size from the commandline from the user. If it's incorrect it asks again until entered value is valid.
      *
-     * @return Returns map size given by user (6/8/10/12).
+     * @return Returns map size given by user (4/6/8/10/12).
      */
     public int getMapSizeFromUser() {
         int mapSize;
         String input;
 
-        System.out.print("\nEnter map size (6/8/10/12): ");
+        System.out.print("\nEnter map size (4/6/8/10/12): ");
         input = scanner.nextLine();
         mapSize = Integer.parseInt(input);
 
         while (!validMapSize(mapSize)) {
             System.out.println("Incorrect map size!");
-            System.out.print("\nEnter map size (6/8/10/12): ");
+            System.out.print("\nEnter map size (4/6/8/10/12): ");
             input = scanner.nextLine();
             mapSize = Integer.parseInt(input);
         }
@@ -91,7 +91,7 @@ public class InputController {
     }
 
     private boolean validMapSize(int n) {
-        if (n < 6 || n > 12) {
+        if (n < 4 || n > 12) {
             return false;
         }
         if (n % 2 != 0) {

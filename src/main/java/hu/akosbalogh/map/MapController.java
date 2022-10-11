@@ -59,7 +59,7 @@ public class MapController {
      */
     public void buildMap(int mapSize) throws Exception {
         if (mapSize % 2 == 0) {
-            if (mapSize >= 6 && mapSize <= 12) {
+            if (mapSize >= 4 && mapSize <= 12) {
 
                 this.houndPositions = new int[mapSize / 2][2];
                 this.foxPosition = new int[2];

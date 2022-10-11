@@ -29,7 +29,7 @@ public class MapControllerTest {
         assertThrows(Exception.class,() -> {
             RandomController randomController = new RandomController();
             MapController mapController = new MapController(randomController);
-            mapController.buildMap(4);
+            mapController.buildMap(2);
         });
     }
 
