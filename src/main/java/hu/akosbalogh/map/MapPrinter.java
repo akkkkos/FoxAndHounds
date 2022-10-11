@@ -3,14 +3,14 @@ package hu.akosbalogh.map;
 import hu.akosbalogh.map.model.Map;
 
 /**
- * Todo.
+ * Map Printer class for Fox and Hounds game.
  */
 public class MapPrinter {
 
     /**
-     * Todo.
+     * Prints a Fox and Hounds game to the console with colors.
      *
-     * @param map Todo.
+     * @param map The given map that should be printed.
      */
     public void printMap(Map map) throws Exception {
         if (map != null) {
@@ -29,7 +29,7 @@ public class MapPrinter {
                         System.out.print(mapToPrint[i][j]);
                     }
                 }
-                System.out.println("");
+                System.out.println();
             }
         } else {
             throw new Exception("Map is not correct");

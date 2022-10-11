@@ -1,7 +1,10 @@
 package hu.akosbalogh.map;
 
-import java.util.Random;
+import java.util.Arrays;
+import java.util.Objects;
 
+import hu.akosbalogh.exceptions.MapInitializationException;
+import hu.akosbalogh.game.RandomController;
 import hu.akosbalogh.map.model.Map;
 import hu.akosbalogh.map.validation.MapValidator;
 
@@ -10,47 +13,49 @@ import hu.akosbalogh.map.validation.MapValidator;
  */
 public class MapController {
 
+    private final RandomController randomController;
     private Map map;
     private int[][] houndPositions;
     private int[] foxPosition;
 
-    public MapController() {
+    public MapController(RandomController randomController) {
+        this.randomController = randomController;
     }
 
     /**
-     * Todo.
+     * Gets the fox's position on the map.
      *
-     * @return Todo.
-     * @throws Exception Todo.
+     * @return Returns the fox's row index and column index.
+     * @throws Exception If the map hasn't been built before.
      */
     public int[] getFoxPosition() throws Exception {
         if (map != null) {
             return foxPosition;
         } else {
-            throw new Exception("Map hasn't been initialized");
+            throw new MapInitializationException();
         }
     }
 
     /**
-     * Todo.
+     * Gets the map.
      *
-     * @return Todo.
-     * @throws Exception Todo.
+     * @return Returns the map as Map object.
+     * @throws Exception If the map hasn't been built before.
      */
     public Map getMap() throws Exception {
         if (map != null) {
             return map;
         } else {
-            throw new Exception("Map hasn't been initialized");
+            throw new MapInitializationException();
         }
     }
 
 
     /**
-     * Todo.
+     * Builds the map with the size given for a Fox and Hounds game.
      *
-     * @param mapSize Todo.
-     * @throws Exception Todo.
+     * @param mapSize The size the map should be in.
+     * @throws Exception If the given map size is not valid.
      */
     public void buildMap(int mapSize) throws Exception {
         if (mapSize % 2 == 0) {
@@ -88,7 +93,7 @@ public class MapController {
                 foxPosition[0] = mapSize - 1;
                 foxPosition[1] = 0;
 
-                this.map = new Map(mapSize, mapSize, charMap);
+                this.map = new Map(charMap);
             } else {
                 throw new Exception("Out of range for map size");
             }
@@ -99,9 +104,9 @@ public class MapController {
     }
 
     /**
-     * Todo.
+     * Moves the fox on the map with the given move.
      *
-     * @param move Todo.
+     * @param move The given move to do.
      */
 
     public void moveFox(String move) throws Exception {
@@ -111,49 +116,54 @@ public class MapController {
 
             char[][] newMap = map.getMapAsChars();
 
-            if (move.equals("ur")) {
-                newMap[foxRowIndex - 1][foxColumnIndex + 1] = 'F';
-                newMap[foxRowIndex][foxColumnIndex] = 'O';
-                this.foxPosition[0]--;
-                this.foxPosition[1]++;
-            } else if (move.equals("dr")) {
-                newMap[foxRowIndex + 1][foxColumnIndex + 1] = 'F';
-                newMap[foxRowIndex][foxColumnIndex] = 'O';
-                this.foxPosition[0]++;
-                this.foxPosition[1]++;
-            } else if (move.equals("ul")) {
-                newMap[foxRowIndex - 1][foxColumnIndex - 1] = 'F';
-                newMap[foxRowIndex][foxColumnIndex] = 'O';
-                this.foxPosition[0]--;
-                this.foxPosition[1]--;
-            } else if (move.equals("dl")) {
-                newMap[foxRowIndex + 1][foxColumnIndex - 1] = 'F';
-                newMap[foxRowIndex][foxColumnIndex] = 'O';
-                this.foxPosition[0]++;
-                this.foxPosition[1]--;
+            switch (move) {
+                case "ur":
+                    newMap[foxRowIndex - 1][foxColumnIndex + 1] = 'F';
+                    newMap[foxRowIndex][foxColumnIndex] = 'O';
+                    this.foxPosition[0]--;
+                    this.foxPosition[1]++;
+                    break;
+                case "dr":
+                    newMap[foxRowIndex + 1][foxColumnIndex + 1] = 'F';
+                    newMap[foxRowIndex][foxColumnIndex] = 'O';
+                    this.foxPosition[0]++;
+                    this.foxPosition[1]++;
+                    break;
+                case "ul":
+                    newMap[foxRowIndex - 1][foxColumnIndex - 1] = 'F';
+                    newMap[foxRowIndex][foxColumnIndex] = 'O';
+                    this.foxPosition[0]--;
+                    this.foxPosition[1]--;
+                    break;
+                case "dl":
+                    newMap[foxRowIndex + 1][foxColumnIndex - 1] = 'F';
+                    newMap[foxRowIndex][foxColumnIndex] = 'O';
+                    this.foxPosition[0]++;
+                    this.foxPosition[1]--;
+                    break;
+                default:
+                    break;
             }
 
             map.setMapAsChars(newMap);
         } else {
-            throw new Exception("Map hasn't been initialized");
+            throw new MapInitializationException();
         }
     }
 
     /**
-     * Todo.
+     * Moves a hound randomly on the map.
      */
     public void moveRandomHound() throws Exception {
         if (map != null) {
             MapValidator mapValidator = new MapValidator();
             int numberOfHounds = map.getNumberOfColumns() / 2;
             char[][] copyOfMap = map.getMapAsChars();
-
-            Random rand = new Random();
             boolean validMoveMade = false;
 
             while (!validMoveMade) {
-                int randomHoundIndex = rand.nextInt(numberOfHounds);
-                int randomHoundMove = rand.nextInt(2);
+                int randomHoundIndex = randomController.getRandomHound(numberOfHounds);
+                int randomHoundMove = randomController.getRandomHoundMove();
                 int randomHoundsRowIndex = houndPositions[randomHoundIndex][0];
                 int randomHoundsColumnIndex = houndPositions[randomHoundIndex][1];
 
@@ -183,7 +193,34 @@ public class MapController {
 
             map.setMapAsChars(copyOfMap);
         } else {
-            throw new Exception("Map hasn't been initialized");
+            throw new MapInitializationException();
         }
+    }
+
+    @Override
+    public String toString() {
+        return "MapController{" +
+                "randomController=" + randomController +
+                ", map=" + map +
+                ", houndPositions=" + Arrays.toString(houndPositions) +
+                ", foxPosition=" + Arrays.toString(foxPosition) +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        MapController that = (MapController) o;
+        return map.equals(that.map);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(map);
     }
 }

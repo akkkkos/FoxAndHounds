@@ -1,28 +1,24 @@
 package hu.akosbalogh.map.model;
 
+
 import java.util.Arrays;
 
 /**
- * Todo.
+ * Map model.
  */
 public class Map {
-
-    private final int numberOfRows;
-    private final int numberOfColumns;
     private char[][] mapAsChars;
 
-    public Map(int numberOfRows, int numberOfColumns, char[][] map) {
-        this.numberOfRows = numberOfRows;
-        this.numberOfColumns = numberOfColumns;
+    public Map(char[][] map) {
         this.mapAsChars = map;
     }
 
     public int getNumberOfRows() {
-        return numberOfRows;
+        return mapAsChars.length;
     }
 
     public int getNumberOfColumns() {
-        return numberOfColumns;
+        return mapAsChars[0].length;
     }
 
     public char[][] getMapAsChars() {
@@ -46,4 +42,34 @@ public class Map {
         return result;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder mapAsString = new StringBuilder();
+        for (int i = 0; i < mapAsChars.length; i++) {
+            for (int j = 0; j < mapAsChars[0].length; j++) {
+                mapAsString.append(mapAsChars[i][j]);
+            }
+            mapAsString.append("\n");
+        }
+        return "Map{\n" +
+                mapAsString +
+                "\n}\n";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Map map = (Map) o;
+        return Arrays.deepEquals(mapAsChars, map.mapAsChars);
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.deepHashCode(mapAsChars);
+    }
 }

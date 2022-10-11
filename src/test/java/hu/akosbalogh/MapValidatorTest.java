@@ -1,5 +1,6 @@
 package hu.akosbalogh;
 
+import hu.akosbalogh.game.RandomController;
 import hu.akosbalogh.map.model.Map;
 import hu.akosbalogh.map.MapController;
 import hu.akosbalogh.map.validation.MapValidator;
@@ -13,7 +14,8 @@ public class MapValidatorTest {
     public void searchFoxColumnIndexShouldReturnCorrectColumnIndex() throws Exception {
 
         MapValidator mapValidator = new MapValidator();
-        MapController mapController = new MapController();
+        RandomController randomController = new RandomController();
+        MapController mapController = new MapController(randomController);
         mapController.buildMap(8);
         mapController.moveFox("ur");
         mapController.moveFox("ur");
@@ -27,7 +29,8 @@ public class MapValidatorTest {
     @Test
     public void isHoundWinnerShouldReturnCorrectly() throws Exception {
         MapValidator mapValidator = new MapValidator();
-        MapController mapController = new MapController();
+        RandomController randomController = new RandomController();
+        MapController mapController = new MapController(randomController);
         mapController.buildMap(6);
 
         assertFalse(mapValidator.isHoundWinner(mapController.getMap()));
@@ -43,7 +46,8 @@ public class MapValidatorTest {
     @Test
     public void isFoxWinnerShouldReturnCorrectly() throws Exception {
         MapValidator mapValidator = new MapValidator();
-        MapController mapController = new MapController();
+        RandomController randomController = new RandomController();
+        MapController mapController = new MapController(randomController);
         mapController.buildMap(6);
 
         assertFalse(mapValidator.isFoxWinner(mapController.getMap()));
@@ -55,4 +59,16 @@ public class MapValidatorTest {
 
         assertTrue(mapValidator.isFoxWinner(oldMap));
     }
+
+    @Test
+    public void searchingForFoxWithoutValidMapShouldResultInException() {
+        MapValidator mapValidator = new MapValidator();
+        char[][] charMap = new char[0][0];
+        Map map = new Map(charMap);
+
+        assertThrows(Exception.class, () -> {
+           mapValidator.searchFoxRowIndex(map);
+        });
+    }
+
 }

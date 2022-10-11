@@ -3,7 +3,7 @@ package hu.akosbalogh.input;
 import java.util.Scanner;
 
 /**
- * Todo.
+ * Input controller for Fox and Hounds Game.
  */
 public class InputController {
     private final Scanner scanner;
@@ -13,9 +13,9 @@ public class InputController {
     }
 
     /**
-     * Todo.
+     * Checks if the input from user is in correct format.
      *
-     * @return Todo.
+     * @return Returns true if the input is in correct format.
      */
     public boolean isUserMoveCorrectFormat(String input) {
         if (input.length() != 7) {
@@ -38,9 +38,9 @@ public class InputController {
     }
 
     /**
-     * Todo.
+     * Gets input from the user.
      *
-     * @return Todo.
+     * @return Returns the command if the input is a known command . If it's not then it returns unknown.
      */
     public String getUserInput() {
         String input = scanner.nextLine();
@@ -59,9 +59,9 @@ public class InputController {
     }
 
     /**
-     * Todo.
+     * Gets the map size from the commandline from the user. If it's incorrect it asks again until entered value is valid.
      *
-     * @return Todo.
+     * @return Returns map size given by user (6/8/10/12).
      */
     public int getMapSizeFromUser() {
         int mapSize;
@@ -82,9 +82,9 @@ public class InputController {
     }
 
     /**
-     * Todo.
+     * Asks for the users name.
      *
-     * @return Todo.
+     * @return Returns the answer.
      */
     public String getUserNameFromUser() {
         return scanner.nextLine();

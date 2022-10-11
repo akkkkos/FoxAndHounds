@@ -1,5 +1,6 @@
 package hu.akosbalogh;
 
+import hu.akosbalogh.game.RandomController;
 import hu.akosbalogh.map.MapController;
 import org.junit.jupiter.api.Test;
 
@@ -12,7 +13,8 @@ public class MapControllerTest {
     @Test
     public void buildingMapWithOddNumberForSizeShouldResultInException() {
         assertThrows(Exception.class,() -> {
-            MapController mapController = new MapController();
+            RandomController randomController = new RandomController();
+            MapController mapController = new MapController(randomController);
             mapController.buildMap(7);
         });
     }
@@ -20,23 +22,28 @@ public class MapControllerTest {
     @Test
     public void buildingMapWithTooLargeOrTooSmallMapSizeShouldResultInException() {
         assertThrows(Exception.class,() -> {
-            MapController mapController = new MapController();
+            RandomController randomController = new RandomController();
+            MapController mapController = new MapController(randomController);
             mapController.buildMap(14);
         });
         assertThrows(Exception.class,() -> {
-            MapController mapController = new MapController();
+            RandomController randomController = new RandomController();
+            MapController mapController = new MapController(randomController);
             mapController.buildMap(4);
         });
     }
 
     @Test
     public void movingHoundRandomlyShouldChangeTheMap() throws Exception {
-        MapController mapController = new MapController();
+        RandomController randomController = new RandomController();
+        MapController mapController = new MapController(randomController);
         mapController.buildMap(8);
         char[][] oldMap = mapController.getMap().getMapAsChars();
         mapController.moveRandomHound();
         char[][] newMap = mapController.getMap().getMapAsChars();
         assertFalse(Arrays.deepEquals(oldMap, newMap));
+
+        //given(randomController.getRandomHound(mapController.getMap().getNumberOfColumns() / 2)).willReturn(1);
 
         oldMap = newMap;
         mapController.moveRandomHound();
@@ -56,7 +63,8 @@ public class MapControllerTest {
 
     @Test
     public void movingWithFoxShouldBeAbleToMoveFromOneSideToAnother() throws Exception {
-        MapController mapController = new MapController();
+        RandomController randomController = new RandomController();
+        MapController mapController = new MapController(randomController);
         mapController.buildMap(6);
         char[][] oldMap = mapController.getMap().getMapAsChars();
 
@@ -79,5 +87,33 @@ public class MapControllerTest {
         newMap = mapController.getMap().getMapAsChars();
 
         assertTrue(Arrays.deepEquals(oldMap, newMap));
+    }
+
+    @Test
+    public void runningGettersWithoutMapInitializationFirstShouldResultInException() {
+        RandomController randomController = new RandomController();
+        MapController mapController = new MapController(randomController);
+
+        assertThrows(Exception.class, () -> {
+            mapController.getMap();
+        });
+
+        assertThrows(Exception.class, () -> {
+            mapController.getFoxPosition();
+        });
+    }
+
+    @Test
+    public void movingCharactersWithoutMapInitializationFirstShouldResultInException() {
+        RandomController randomController = new RandomController();
+        MapController mapController = new MapController(randomController);
+
+        assertThrows(Exception.class, () -> {
+            mapController.moveFox("ur");
+        });
+
+        assertThrows(Exception.class, () -> {
+            mapController.moveRandomHound();
+        });
     }
 }

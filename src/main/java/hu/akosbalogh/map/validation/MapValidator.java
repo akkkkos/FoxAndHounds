@@ -56,16 +56,15 @@ public class MapValidator {
      * @param map The map.
      * @return Returns true if the Fox won.
      */
-    public boolean isFoxWinner(Map map) throws Exception {
-        if (map != null) {
-            for (int i = 1; i < map.getNumberOfColumns() - 1; i += 2) {
-                if (map.getMapAsChars()[0][i] == 'F') {
-                    return true;
-                }
+    public boolean isFoxWinner(Map map) {
+
+        for (int i = 1; i < map.getNumberOfColumns() - 1; i += 2) {
+            if (map.getMapAsChars()[0][i] == 'F') {
+                return true;
             }
-            return false;
         }
-        throw new Exception("Map is not correct");
+        return false;
+
     }
 
     /**
@@ -75,10 +74,7 @@ public class MapValidator {
      * @return Returns true if the Hounds won.
      */
     public boolean isHoundWinner(Map map) throws Exception {
-        if (map != null) {
-            return foxHasNoAvailableSpace(map);
-        }
-        throw new Exception("Map is not correct");
+        return foxHasNoAvailableSpace(map);
     }
 
     private boolean foxHasNoAvailableSpace(Map map) throws Exception {
@@ -103,67 +99,63 @@ public class MapValidator {
     }
 
     /**
-     * Todo.
+     * Checks of no valid move can be made as a hound anymore.
      *
-     * @param houndPositions Todo.
-     * @param map            Todo.
-     * @return Todo.
+     * @param houndPositions The row and column indexes of the hounds on the map.
+     * @param map            The map it should check for valid moves.
+     * @return Returns true if no valid move can be made.
      */
-    public boolean noValidMoveCanBeMadeAsHound(int[][] houndPositions, Map map) throws Exception {
-        if (map != null && houndPositions != null) {
-            boolean validMoveCanBeMade = false;
+    public boolean noValidMoveCanBeMadeAsHound(int[][] houndPositions, Map map) {
+        boolean validMoveCanBeMade = false;
 
-            for (int[] houndPos : houndPositions) {
-                if (isSpecifiedSpaceAvailable(map, houndPos[0], houndPos[1], "dr")) {
-                    validMoveCanBeMade = true;
-                }
-                if (isSpecifiedSpaceAvailable(map, houndPos[0], houndPos[1], "dl")) {
-                    validMoveCanBeMade = true;
-                }
+        for (int[] houndPos : houndPositions) {
+            if (isSpecifiedSpaceAvailable(map, houndPos[0], houndPos[1], "dr")) {
+                validMoveCanBeMade = true;
             }
-
-            return !validMoveCanBeMade;
+            if (isSpecifiedSpaceAvailable(map, houndPos[0], houndPos[1], "dl")) {
+                validMoveCanBeMade = true;
+            }
         }
-        throw new Exception("Map or Hound positions are not correct");
+
+        return !validMoveCanBeMade;
+
     }
 
     /**
-     * Todo.
+     * Searches for the fox's row index on a map.
      *
-     * @param map Todo.
-     * @return Todo.
+     * @param map The given map the function should search on.
+     * @return Returns the fox's row index the map.
      */
     public int searchFoxRowIndex(Map map) throws Exception {
-        if (map != null) {
-            for (int i = 0; i < map.getNumberOfRows(); i++) {
-                for (int j = 0; j < map.getNumberOfColumns(); j++) {
-                    if (map.getMapAsChars()[i][j] == 'F') {
-                        return i;
-                    }
+
+        for (int i = 0; i < map.getNumberOfRows(); i++) {
+            for (int j = 0; j < map.getNumberOfColumns(); j++) {
+                if (map.getMapAsChars()[i][j] == 'F') {
+                    return i;
                 }
             }
-            throw new Exception("No Fox on map.");
         }
-        throw new Exception("Map is not correct");
+        throw new Exception("No Fox on map.");
+
     }
 
     /**
-     * Todo.
+     * Searches for the fox's column index on a map.
      *
-     * @param map Todo.
-     * @return Todo.
+     * @param map The given map the function should search on.
+     * @return Returns the fox's column index the map.
      */
     public int searchFoxColumnIndex(Map map) throws Exception {
-        if (map != null) {
-            for (int i = 0; i < map.getNumberOfRows(); i++) {
-                for (int j = 0; j < map.getNumberOfColumns(); j++) {
-                    if (map.getMapAsChars()[i][j] == 'F') {
-                        return j;
-                    }
+
+        for (int i = 0; i < map.getNumberOfRows(); i++) {
+            for (int j = 0; j < map.getNumberOfColumns(); j++) {
+                if (map.getMapAsChars()[i][j] == 'F') {
+                    return j;
                 }
             }
-            throw new Exception("No Fox on map.");
         }
-        throw new Exception("Map is not correct");
+        throw new Exception("No Fox on map.");
+
     }
 }
