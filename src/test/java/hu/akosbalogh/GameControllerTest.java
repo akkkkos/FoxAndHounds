@@ -1,5 +1,6 @@
 package hu.akosbalogh;
 
+import hu.akosbalogh.data.ScoreRepository;
 import hu.akosbalogh.game.GameController;
 import hu.akosbalogh.game.RandomController;
 import hu.akosbalogh.input.InputController;
@@ -10,40 +11,42 @@ import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 public class GameControllerTest {
+    RandomController randomController = new RandomController();
+    MapValidator mapValidator = new MapValidator();
+    MapPrinter mapPrinter = new MapPrinter();
+    ScoreRepository scoreRepository = new ScoreRepository();
+
+    public GameControllerTest() throws SQLException {
+    }
 
     @Test
     public void startingNormalGameShouldNotResultInException() {
-        String input = "name\nstart\n6\nexit\n";
+        String input = "Ákos\nstart\n6\nexit\n";
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
 
-        RandomController randomController = new RandomController();
         MapController mapController = new MapController(randomController);
         InputController inputController = new InputController();
-        MapValidator mapValidator = new MapValidator();
-        MapPrinter mapPrinter = new MapPrinter();
-        GameController gameController = new GameController(mapController, inputController, mapValidator, mapPrinter);
-
+        GameController gameController = new GameController(mapController, inputController, mapValidator, mapPrinter, scoreRepository);
 
         assertDoesNotThrow(() -> {gameController.start();});
     }
 
     @Test
     public void movingAtLeastTwiceInGameShouldNotResultInException() {
-        String input = "name\nstart\n8\nmove ur\nmove dl\nexit\n";
+        String input = "Ákos\nstart\n8\nmove ur\nmove dl\nexit\n";
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
 
-        RandomController randomController = new RandomController();
         MapController mapController = new MapController(randomController);
         InputController inputController = new InputController();
-        MapValidator mapValidator = new MapValidator();
-        MapPrinter mapPrinter = new MapPrinter();
-        GameController gameController = new GameController(mapController, inputController, mapValidator, mapPrinter);
+
+        GameController gameController = new GameController(mapController, inputController, mapValidator, mapPrinter, scoreRepository);
 
 
         assertDoesNotThrow(() -> {gameController.start();});
@@ -51,7 +54,7 @@ public class GameControllerTest {
 
     @Test
     public void allKnownCommandsShouldWork() {
-        String input = "name\n" +
+        String input = "Ákos\n" +
                 "move\n" +
                 "commands\n" +
                 "test\n" +
@@ -59,16 +62,14 @@ public class GameControllerTest {
                 "8\n" +
                 "move dl\n" +
                 "move ur\n" +
+                "scores\n" +
                 "exit\n";
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
 
-        RandomController randomController = new RandomController();
         MapController mapController = new MapController(randomController);
         InputController inputController = new InputController();
-        MapValidator mapValidator = new MapValidator();
-        MapPrinter mapPrinter = new MapPrinter();
-        GameController gameController = new GameController(mapController, inputController, mapValidator, mapPrinter);
+        GameController gameController = new GameController(mapController, inputController, mapValidator, mapPrinter, scoreRepository);
 
 
         assertDoesNotThrow(() -> {gameController.start();});

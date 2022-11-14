@@ -2,9 +2,12 @@ package hu.akosbalogh.input;
 
 import java.util.Scanner;
 
+import org.springframework.stereotype.Service;
+
 /**
  * Input controller for Fox and Hounds Game.
  */
+@Service
 public class InputController {
     private final Scanner scanner;
 

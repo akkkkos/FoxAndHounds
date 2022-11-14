@@ -5,10 +5,13 @@ import hu.akosbalogh.input.InputController;
 import hu.akosbalogh.map.MapController;
 import hu.akosbalogh.map.MapPrinter;
 import hu.akosbalogh.map.validation.MapValidator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Fox and Hounds game controller service.
  */
+@Service
 public class GameController {
 
     private boolean isGameRunning;
@@ -20,6 +23,7 @@ public class GameController {
     private final ScoreRepository scoreRepository;
     private String userName;
 
+    @Autowired
     public GameController(MapController mapController,
                           InputController inputController,
                           MapValidator mapValidator,
@@ -43,6 +47,7 @@ public class GameController {
         System.out.println("Starting app...");
         System.out.println("Hello! Please enter your name: ");
         userName = inputController.getUserNameFromUser();
+        scoreRepository.loginPlayer(userName);
         System.out.println("\nHello " + userName + "!\nEnter commands for available commands.");
 
         while (isAppRunning) {
@@ -70,6 +75,7 @@ public class GameController {
                 System.out.println("Unknown command.");
             }
         }
+        scoreRepository.closeConnection();
         System.out.println("Exiting app...");
     }
 
@@ -77,6 +83,7 @@ public class GameController {
         mapController.moveFox(move);
 
         if (mapValidator.isFoxWinner(mapController.getMap())) {
+            System.out.println("\n");
             mapPrinter.printMap(mapController.getMap());
             System.out.println("Win!");
             saveWinToDb();
@@ -87,6 +94,7 @@ public class GameController {
             System.out.println("\nMoving Random Hound...");
 
             if (mapValidator.isHoundWinner(mapController.getMap())) {
+                System.out.println("\n");
                 mapPrinter.printMap(mapController.getMap());
                 System.out.println("Lose!");
                 isGameRunning = false;
@@ -106,9 +114,9 @@ public class GameController {
             isGameRunning = false;
             isAppRunning = false;
         } else if (!isGameRunning && input.startsWith("move")) {
-            System.out.println("No game is running currently.");
+            System.out.println("No game is running currently. \n");
         } else if (input.equals("commands")) {
-            System.out.println("Available commands: (start, exit, commands, move ur/ul/dr/dl)");
+            System.out.println("Available commands: (start, scores, exit, commands, move ur/ul/dr/dl) \n");
         } else if (input.equals("scores")) {
             printHighScores();
         }
@@ -121,12 +129,12 @@ public class GameController {
     private void printHighScores() {
         String[][] highScores = scoreRepository.getTopFiveHighScores();
         System.out.println("\nHigh Scores:");
-        for (String[] score: highScores) {
+        for (String[] score : highScores) {
             if (score[0] != null) {
                 System.out.println(score[0] + ": " + score[1]);
             }
         }
-        System.out.println("\n");
+        System.out.println("");
     }
 
 }

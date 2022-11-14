@@ -1,11 +1,13 @@
 package hu.akosbalogh.map.model;
 
-
 import java.util.Arrays;
+
+import org.springframework.stereotype.Component;
 
 /**
  * Map model.
  */
+@Component
 public class Map {
     private char[][] mapAsChars;
 

@@ -7,6 +7,8 @@ import hu.akosbalogh.input.InputController;
 import hu.akosbalogh.map.MapController;
 import hu.akosbalogh.map.MapPrinter;
 import hu.akosbalogh.map.validation.MapValidator;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**
  * The Main class.
@@ -19,14 +21,9 @@ public class Main {
      * @throws Exception Exception.
      */
     public static void main(String[] args) throws Exception {
-        RandomController randomController = new RandomController();
-        MapController mapController = new MapController(randomController);
-        InputController inputController = new InputController();
-        MapValidator mapValidator = new MapValidator();
-        MapPrinter mapPrinter = new MapPrinter();
-        ScoreRepository scoreRepository = new ScoreRepository();
+        ApplicationContext applicationContext = new AnnotationConfigApplicationContext("hu.akosbalogh");
 
-        GameController gameController = new GameController(mapController, inputController, mapValidator, mapPrinter, scoreRepository);
+        GameController gameController = applicationContext.getBean(GameController.class);
         gameController.start();
     }
 }

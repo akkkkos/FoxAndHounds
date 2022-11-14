@@ -1,10 +1,12 @@
 package hu.akosbalogh.map;
 
 import hu.akosbalogh.map.model.Map;
+import org.springframework.stereotype.Service;
 
 /**
  * Map Printer class for Fox and Hounds game.
  */
+@Service
 public class MapPrinter {
 
     /**

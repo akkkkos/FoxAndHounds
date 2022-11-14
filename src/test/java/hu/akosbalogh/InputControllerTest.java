@@ -30,7 +30,7 @@ public class InputControllerTest {
 
     @Test
     public void getUserInputShouldReturnCorrectValues() {
-        String input = "test\nexit\nstart\nmove\ncommands\n";
+        String input = "Ákos\nexit\nstart\nmove\ncommands\n";
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
 

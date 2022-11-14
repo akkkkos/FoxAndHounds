@@ -7,10 +7,13 @@ import hu.akosbalogh.exceptions.MapInitializationException;
 import hu.akosbalogh.game.RandomController;
 import hu.akosbalogh.map.model.Map;
 import hu.akosbalogh.map.validation.MapValidator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Map Controller for Fox and Hounds game.
  */
+@Service
 public class MapController {
 
     private final RandomController randomController;
@@ -18,6 +21,7 @@ public class MapController {
     private int[][] houndPositions;
     private int[] foxPosition;
 
+    @Autowired
     public MapController(RandomController randomController) {
         this.randomController = randomController;
     }

@@ -9,13 +9,12 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class MapValidatorTest {
+    MapValidator mapValidator = new MapValidator();
+    RandomController randomController = new RandomController();
+    MapController mapController = new MapController(randomController);
 
     @Test
     public void searchFoxColumnIndexShouldReturnCorrectColumnIndex() throws Exception {
-
-        MapValidator mapValidator = new MapValidator();
-        RandomController randomController = new RandomController();
-        MapController mapController = new MapController(randomController);
         mapController.buildMap(8);
         mapController.moveFox("ur");
         mapController.moveFox("ur");
@@ -28,9 +27,6 @@ public class MapValidatorTest {
 
     @Test
     public void isHoundWinnerShouldReturnCorrectly() throws Exception {
-        MapValidator mapValidator = new MapValidator();
-        RandomController randomController = new RandomController();
-        MapController mapController = new MapController(randomController);
         mapController.buildMap(6);
 
         assertFalse(mapValidator.isHoundWinner(mapController.getMap()));
@@ -45,9 +41,6 @@ public class MapValidatorTest {
 
     @Test
     public void isFoxWinnerShouldReturnCorrectly() throws Exception {
-        MapValidator mapValidator = new MapValidator();
-        RandomController randomController = new RandomController();
-        MapController mapController = new MapController(randomController);
         mapController.buildMap(6);
 
         assertFalse(mapValidator.isFoxWinner(mapController.getMap()));
@@ -62,7 +55,6 @@ public class MapValidatorTest {
 
     @Test
     public void searchingForFoxWithoutValidMapShouldResultInException() {
-        MapValidator mapValidator = new MapValidator();
         char[][] charMap = new char[0][0];
         Map map = new Map(charMap);
 

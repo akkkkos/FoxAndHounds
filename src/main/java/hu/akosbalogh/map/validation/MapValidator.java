@@ -1,10 +1,12 @@
 package hu.akosbalogh.map.validation;
 
 import hu.akosbalogh.map.model.Map;
+import org.springframework.stereotype.Service;
 
 /**
  * MapValidator.
  */
+@Service
 public class MapValidator {
     /**
      * Is specified space available with given map, starting point and move.
