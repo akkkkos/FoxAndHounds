@@ -78,24 +78,24 @@ public class MapValidator {
     }
 
     private boolean foxHasNoAvailableSpace(Map map) throws Exception {
-        int n = 0;
+        int numberOfUnavailableMoves = 0;
         int foxColumnIndex = searchFoxColumnIndex(map);
         int foxRowIndex = searchFoxRowIndex(map);
 
         if (!isSpecifiedSpaceAvailable(map, foxRowIndex, foxColumnIndex, "ur")) {
-            n++;
+            numberOfUnavailableMoves++;
         }
         if (!isSpecifiedSpaceAvailable(map, foxRowIndex, foxColumnIndex, "ul")) {
-            n++;
+            numberOfUnavailableMoves++;
         }
         if (!isSpecifiedSpaceAvailable(map, foxRowIndex, foxColumnIndex, "dr")) {
-            n++;
+            numberOfUnavailableMoves++;
         }
         if (!isSpecifiedSpaceAvailable(map, foxRowIndex, foxColumnIndex, "dl")) {
-            n++;
+            numberOfUnavailableMoves++;
         }
 
-        return n == 4;
+        return numberOfUnavailableMoves == 4;
     }
 
     /**

@@ -1,5 +1,6 @@
 package hu.akosbalogh.game;
 
+import hu.akosbalogh.data.ScoreRepository;
 import hu.akosbalogh.input.InputController;
 import hu.akosbalogh.map.MapController;
 import hu.akosbalogh.map.MapPrinter;
@@ -16,17 +17,20 @@ public class GameController {
     private final InputController inputController;
     private final MapValidator mapValidator;
     private final MapPrinter mapPrinter;
+    private final ScoreRepository scoreRepository;
     private String userName;
 
     public GameController(MapController mapController,
                           InputController inputController,
                           MapValidator mapValidator,
-                          MapPrinter mapPrinter) {
+                          MapPrinter mapPrinter,
+                          ScoreRepository scoreRepository) {
         this.mapController = mapController;
         this.inputController = inputController;
         this.mapValidator = mapValidator;
         this.mapPrinter = mapPrinter;
-        this.userName = new String();
+        this.scoreRepository = scoreRepository;
+        this.userName = "";
         isGameRunning = false;
         isAppRunning = true;
     }
@@ -35,6 +39,7 @@ public class GameController {
      * Start a Fox and Hounds game in the console with the specified Map and Input controllers.
      */
     public void start() throws Exception {
+
         System.out.println("Starting app...");
         System.out.println("Hello! Please enter your name: ");
         userName = inputController.getUserNameFromUser();
@@ -42,15 +47,12 @@ public class GameController {
 
         while (isAppRunning) {
             String input = inputController.getUserInput();
-
             if (!input.equals("unknown")) {
-
-                performCommandIfItsKnown(input);
-
+                performKnownCommand(input);
                 if (isGameRunning) {
                     if (input.startsWith("move")) {
-                        boolean isMoveInputCorrect = inputController.isUserMoveCorrectFormat(input);
-                        if (isMoveInputCorrect) {
+                        boolean isMoveInputCorrectFormat = inputController.isUserMoveCorrectFormat(input);
+                        if (isMoveInputCorrectFormat) {
                             boolean isMoveValid = mapValidator.isSpecifiedSpaceAvailable(mapController.getMap(),
                                     mapController.getFoxPosition()[0],
                                     mapController.getFoxPosition()[1],
@@ -77,6 +79,7 @@ public class GameController {
         if (mapValidator.isFoxWinner(mapController.getMap())) {
             mapPrinter.printMap(mapController.getMap());
             System.out.println("Win!");
+            saveWinToDb();
             isGameRunning = false;
         } else {
 
@@ -92,7 +95,7 @@ public class GameController {
         mapPrinter.printMap(mapController.getMap());
     }
 
-    private void performCommandIfItsKnown(String input) throws Exception {
+    private void performKnownCommand(String input) throws Exception {
         if (input.equals("start")) {
             isGameRunning = true;
             int mapSize = inputController.getMapSizeFromUser();
@@ -106,6 +109,24 @@ public class GameController {
             System.out.println("No game is running currently.");
         } else if (input.equals("commands")) {
             System.out.println("Available commands: (start, exit, commands, move ur/ul/dr/dl)");
+        } else if (input.equals("scores")) {
+            printHighScores();
         }
     }
+
+    private void saveWinToDb() {
+        scoreRepository.increaseScore(userName);
+    }
+
+    private void printHighScores() {
+        String[][] highScores = scoreRepository.getTopFiveHighScores();
+        System.out.println("\nHigh Scores:");
+        for (String[] score: highScores) {
+            if (score[0] != null) {
+                System.out.println(score[0] + ": " + score[1]);
+            }
+        }
+        System.out.println("\n");
+    }
+
 }

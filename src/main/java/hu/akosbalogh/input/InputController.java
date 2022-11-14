@@ -53,6 +53,8 @@ public class InputController {
             return input;
         } else if (input.equals("commands")) {
             return "commands";
+        } else if (input.equals("scores")) {
+            return "scores";
         }
 
         return "unknown";

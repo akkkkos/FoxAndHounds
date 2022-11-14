@@ -1,5 +1,6 @@
 package hu.akosbalogh;
 
+import hu.akosbalogh.data.ScoreRepository;
 import hu.akosbalogh.game.GameController;
 import hu.akosbalogh.game.RandomController;
 import hu.akosbalogh.input.InputController;
@@ -23,8 +24,9 @@ public class Main {
         InputController inputController = new InputController();
         MapValidator mapValidator = new MapValidator();
         MapPrinter mapPrinter = new MapPrinter();
+        ScoreRepository scoreRepository = new ScoreRepository();
 
-        GameController gameController = new GameController(mapController, inputController, mapValidator, mapPrinter);
+        GameController gameController = new GameController(mapController, inputController, mapValidator, mapPrinter, scoreRepository);
         gameController.start();
     }
 }
