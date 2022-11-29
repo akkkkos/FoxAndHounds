@@ -1,21 +1,21 @@
 package hu.akosbalogh;
 
 import hu.akosbalogh.input.RandomWrapper;
-import hu.akosbalogh.map.MapService;
+import hu.akosbalogh.game.GameStateService;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class MapServiceTest {
+public class GameStateServiceTest {
 
     @Test
     public void buildingMapWithOddNumberForSizeShouldResultInException() {
         assertThrows(Exception.class,() -> {
             RandomWrapper randomWrapper = new RandomWrapper();
-            MapService mapService = new MapService(randomWrapper);
-            mapService.buildMap(7);
+            GameStateService gameStateService = new GameStateService(randomWrapper);
+            gameStateService.buildNewMap(7);
         });
     }
 
@@ -23,68 +23,68 @@ public class MapServiceTest {
     public void buildingMapWithTooLargeOrTooSmallMapSizeShouldResultInException() {
         assertThrows(Exception.class,() -> {
             RandomWrapper randomWrapper = new RandomWrapper();
-            MapService mapService = new MapService(randomWrapper);
-            mapService.buildMap(14);
+            GameStateService gameStateService = new GameStateService(randomWrapper);
+            gameStateService.buildNewMap(14);
         });
         assertThrows(Exception.class,() -> {
             RandomWrapper randomWrapper = new RandomWrapper();
-            MapService mapService = new MapService(randomWrapper);
-            mapService.buildMap(2);
+            GameStateService gameStateService = new GameStateService(randomWrapper);
+            gameStateService.buildNewMap(2);
         });
     }
 
     @Test
     public void movingHoundRandomlyShouldChangeTheMap() throws Exception {
         RandomWrapper randomWrapper = new RandomWrapper();
-        MapService mapService = new MapService(randomWrapper);
-        mapService.buildMap(8);
-        char[][] oldMap = mapService.getMap().getMapAsChars();
-        mapService.moveRandomHound();
-        char[][] newMap = mapService.getMap().getMapAsChars();
+        GameStateService gameStateService = new GameStateService(randomWrapper);
+        gameStateService.buildNewMap(8);
+        char[][] oldMap = gameStateService.getMap().getMapAsChars();
+        gameStateService.moveRandomHound();
+        char[][] newMap = gameStateService.getMap().getMapAsChars();
         assertFalse(Arrays.deepEquals(oldMap, newMap));
 
         //given(randomController.getRandomHound(mapController.getMap().getNumberOfColumns() / 2)).willReturn(1);
 
         oldMap = newMap;
-        mapService.moveRandomHound();
-        newMap = mapService.getMap().getMapAsChars();
+        gameStateService.moveRandomHound();
+        newMap = gameStateService.getMap().getMapAsChars();
         assertFalse(Arrays.deepEquals(oldMap, newMap));
 
         oldMap = newMap;
-        mapService.moveRandomHound();
-        newMap = mapService.getMap().getMapAsChars();
+        gameStateService.moveRandomHound();
+        newMap = gameStateService.getMap().getMapAsChars();
         assertFalse(Arrays.deepEquals(oldMap, newMap));
 
         oldMap = newMap;
-        mapService.moveRandomHound();
-        newMap = mapService.getMap().getMapAsChars();
+        gameStateService.moveRandomHound();
+        newMap = gameStateService.getMap().getMapAsChars();
         assertFalse(Arrays.deepEquals(oldMap, newMap));
     }
 
     @Test
     public void movingWithFoxShouldBeAbleToMoveFromOneSideToAnother() throws Exception {
         RandomWrapper randomWrapper = new RandomWrapper();
-        MapService mapService = new MapService(randomWrapper);
-        mapService.buildMap(6);
-        char[][] oldMap = mapService.getMap().getMapAsChars();
+        GameStateService gameStateService = new GameStateService(randomWrapper);
+        gameStateService.buildNewMap(6);
+        char[][] oldMap = gameStateService.getMap().getMapAsChars();
 
-        mapService.moveFox("ur");
-        mapService.moveFox("dr");
-        mapService.moveFox("ur");
-        mapService.moveFox("dr");
-        mapService.moveFox("ur");
+        gameStateService.moveFox("ur");
+        gameStateService.moveFox("dr");
+        gameStateService.moveFox("ur");
+        gameStateService.moveFox("dr");
+        gameStateService.moveFox("ur");
 
-        char[][] newMap = mapService.getMap().getMapAsChars();
+        char[][] newMap = gameStateService.getMap().getMapAsChars();
 
         assertFalse(Arrays.deepEquals(oldMap, newMap));
 
-        mapService.moveFox("dl");
-        mapService.moveFox("ul");
-        mapService.moveFox("dl");
-        mapService.moveFox("ul");
-        mapService.moveFox("dl");
+        gameStateService.moveFox("dl");
+        gameStateService.moveFox("ul");
+        gameStateService.moveFox("dl");
+        gameStateService.moveFox("ul");
+        gameStateService.moveFox("dl");
 
-        newMap = mapService.getMap().getMapAsChars();
+        newMap = gameStateService.getMap().getMapAsChars();
 
         assertTrue(Arrays.deepEquals(oldMap, newMap));
     }
@@ -92,28 +92,28 @@ public class MapServiceTest {
     @Test
     public void runningGettersWithoutMapInitializationFirstShouldResultInException() {
         RandomWrapper randomWrapper = new RandomWrapper();
-        MapService mapService = new MapService(randomWrapper);
+        GameStateService gameStateService = new GameStateService(randomWrapper);
 
         assertThrows(Exception.class, () -> {
-            mapService.getMap();
+            gameStateService.getMap();
         });
 
         assertThrows(Exception.class, () -> {
-            mapService.getFoxPosition();
+            gameStateService.getFoxPosition();
         });
     }
 
     @Test
     public void movingCharactersWithoutMapInitializationFirstShouldResultInException() {
         RandomWrapper randomWrapper = new RandomWrapper();
-        MapService mapService = new MapService(randomWrapper);
+        GameStateService gameStateService = new GameStateService(randomWrapper);
 
         assertThrows(Exception.class, () -> {
-            mapService.moveFox("ur");
+            gameStateService.moveFox("ur");
         });
 
         assertThrows(Exception.class, () -> {
-            mapService.moveRandomHound();
+            gameStateService.moveRandomHound();
         });
     }
 }

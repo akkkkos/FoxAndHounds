@@ -1,13 +1,15 @@
 package hu.akosbalogh;
 
+import hu.akosbalogh.data.GameStateRepository;
 import hu.akosbalogh.data.ScoreRepository;
 import hu.akosbalogh.game.GameService;
 import hu.akosbalogh.input.RandomWrapper;
 import hu.akosbalogh.input.InputService;
-import hu.akosbalogh.map.MapService;
+import hu.akosbalogh.game.GameStateService;
 import hu.akosbalogh.map.MapPrinter;
 import hu.akosbalogh.map.validation.MapValidator;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -21,6 +23,9 @@ public class GameServiceTest {
     MapPrinter mapPrinter = new MapPrinter();
     ScoreRepository scoreRepository = new ScoreRepository();
 
+    @Autowired
+    GameStateRepository gameStateRepository;
+
     public GameServiceTest() throws SQLException {
     }
 
@@ -30,9 +35,9 @@ public class GameServiceTest {
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
 
-        MapService mapService = new MapService(randomWrapper);
+        GameStateService gameStateService = new GameStateService(randomWrapper);
         InputService inputService = new InputService();
-        GameService gameService = new GameService(mapService, inputService, mapValidator, mapPrinter, scoreRepository);
+        GameService gameService = new GameService(gameStateService, inputService, mapValidator, mapPrinter, scoreRepository, gameStateRepository);
 
         assertDoesNotThrow(() -> {
             gameService.start();});
@@ -44,10 +49,10 @@ public class GameServiceTest {
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
 
-        MapService mapService = new MapService(randomWrapper);
+        GameStateService gameStateService = new GameStateService(randomWrapper);
         InputService inputService = new InputService();
 
-        GameService gameService = new GameService(mapService, inputService, mapValidator, mapPrinter, scoreRepository);
+        GameService gameService = new GameService(gameStateService, inputService, mapValidator, mapPrinter, scoreRepository, gameStateRepository);
 
 
         assertDoesNotThrow(() -> {
@@ -69,9 +74,9 @@ public class GameServiceTest {
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
 
-        MapService mapService = new MapService(randomWrapper);
+        GameStateService gameStateService = new GameStateService(randomWrapper);
         InputService inputService = new InputService();
-        GameService gameService = new GameService(mapService, inputService, mapValidator, mapPrinter, scoreRepository);
+        GameService gameService = new GameService(gameStateService, inputService, mapValidator, mapPrinter, scoreRepository, gameStateRepository);
 
 
         assertDoesNotThrow(() -> {

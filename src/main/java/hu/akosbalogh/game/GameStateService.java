@@ -1,4 +1,4 @@
-package hu.akosbalogh.map;
+package hu.akosbalogh.game;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
  * Map Controller for Fox and Hounds game.
  */
 @Service
-public class MapService {
+public class GameStateService {
 
     private final RandomWrapper randomWrapper;
     private Map map;
@@ -22,8 +22,15 @@ public class MapService {
     private int[] foxPosition;
 
     @Autowired
-    public MapService(RandomWrapper randomWrapper) {
+    public GameStateService(RandomWrapper randomWrapper) {
         this.randomWrapper = randomWrapper;
+    }
+
+    public GameStateService(Map map, int[][] houndPositions, int[] foxPosition) {
+        this.map = map;
+        this.houndPositions = houndPositions;
+        this.foxPosition = foxPosition;
+        this.randomWrapper = new RandomWrapper();
     }
 
     /**
@@ -35,6 +42,20 @@ public class MapService {
     public int[] getFoxPosition() throws Exception {
         if (map != null) {
             return foxPosition;
+        } else {
+            throw new MapInitializationException();
+        }
+    }
+
+    /**
+     * Gets the hounds' position on the map.
+     *
+     * @return Returns the hounds' row indexes and column indexes.
+     * @throws Exception If the map hasn't been built before.
+     */
+    public int[][] getHoundPositions() throws Exception {
+        if (map != null) {
+            return houndPositions;
         } else {
             throw new MapInitializationException();
         }
@@ -61,7 +82,7 @@ public class MapService {
      * @param mapSize The size the map should be in.
      * @throws Exception If the given map size is not valid.
      */
-    public void buildMap(int mapSize) throws Exception {
+    public void buildNewMap(int mapSize) throws Exception {
         if (mapSize % 2 == 0) {
             if (mapSize >= 4 && mapSize <= 12) {
 
@@ -219,7 +240,7 @@ public class MapService {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        MapService that = (MapService) o;
+        GameStateService that = (GameStateService) o;
         return map.equals(that.map);
     }
 

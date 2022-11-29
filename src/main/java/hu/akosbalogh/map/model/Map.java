@@ -11,6 +11,9 @@ import org.springframework.stereotype.Component;
 public class Map {
     private char[][] mapAsChars;
 
+    public Map() {
+    }
+
     public Map(char[][] map) {
         this.mapAsChars = map;
     }

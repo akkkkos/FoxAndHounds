@@ -1,9 +1,9 @@
 package hu.akosbalogh.game;
 
+import hu.akosbalogh.data.GameStateRepository;
 import hu.akosbalogh.data.ScoreRepository;
 import hu.akosbalogh.input.InputService;
 import hu.akosbalogh.map.MapPrinter;
-import hu.akosbalogh.map.MapService;
 import hu.akosbalogh.map.validation.MapValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,24 +16,27 @@ public class GameService {
 
     private boolean isGameRunning;
     private boolean isAppRunning;
-    private final MapService mapService;
+    private GameStateService gameStateService;
     private final InputService inputService;
     private final MapValidator mapValidator;
     private final MapPrinter mapPrinter;
     private final ScoreRepository scoreRepository;
+    private final GameStateRepository gameStateRepository;
     private String userName;
 
     @Autowired
-    public GameService(MapService mapService,
+    public GameService(GameStateService gameStateService,
                        InputService inputService,
                        MapValidator mapValidator,
                        MapPrinter mapPrinter,
-                       ScoreRepository scoreRepository) {
-        this.mapService = mapService;
+                       ScoreRepository scoreRepository,
+                       GameStateRepository gameStateRepository) {
+        this.gameStateService = gameStateService;
         this.inputService = inputService;
         this.mapValidator = mapValidator;
         this.mapPrinter = mapPrinter;
         this.scoreRepository = scoreRepository;
+        this.gameStateRepository = gameStateRepository;
         this.userName = "";
         isGameRunning = false;
         isAppRunning = true;
@@ -58,9 +61,9 @@ public class GameService {
                     if (input.startsWith("move")) {
                         boolean isMoveInputCorrectFormat = inputService.isUserMoveCorrectFormat(input);
                         if (isMoveInputCorrectFormat) {
-                            boolean isMoveValid = mapValidator.isSpecifiedSpaceAvailable(mapService.getMap(),
-                                    mapService.getFoxPosition()[0],
-                                    mapService.getFoxPosition()[1],
+                            boolean isMoveValid = mapValidator.isSpecifiedSpaceAvailable(gameStateService.getMap(),
+                                    gameStateService.getFoxPosition()[0],
+                                    gameStateService.getFoxPosition()[1],
                                     input.substring(5));
                             if (isMoveValid) {
                                 System.out.println("\n\n");
@@ -80,45 +83,63 @@ public class GameService {
     }
 
     private void performGameStep(String move) throws Exception {
-        mapService.moveFox(move);
+        gameStateService.moveFox(move);
 
-        if (mapValidator.isFoxWinner(mapService.getMap())) {
+        if (mapValidator.isFoxWinner(gameStateService.getMap())) {
             System.out.println("\n");
-            mapPrinter.printMap(mapService.getMap());
+            mapPrinter.printMap(gameStateService.getMap());
             System.out.println("Win!");
             saveWinToDb();
+            deleteGameStateIfExists();
             isGameRunning = false;
         } else {
 
-            mapService.moveRandomHound();
+            gameStateService.moveRandomHound();
             System.out.println("\nMoving Random Hound...");
 
-            if (mapValidator.isHoundWinner(mapService.getMap())) {
+            if (mapValidator.isHoundWinner(gameStateService.getMap())) {
                 System.out.println("\n");
-                mapPrinter.printMap(mapService.getMap());
+                mapPrinter.printMap(gameStateService.getMap());
                 System.out.println("Lose!");
+                deleteGameStateIfExists();
                 isGameRunning = false;
             }
         }
-        mapPrinter.printMap(mapService.getMap());
+        mapPrinter.printMap(gameStateService.getMap());
     }
 
     private void performKnownCommand(String input) throws Exception {
         if (input.equals("start")) {
             isGameRunning = true;
             int mapSize = inputService.getMapSizeFromUser();
-            mapService.buildMap(mapSize);
+            gameStateService.buildNewMap(mapSize);
             System.out.println("\n\nStarting game...");
-            mapPrinter.printMap(mapService.getMap());
+            mapPrinter.printMap(gameStateService.getMap());
         } else if (input.equals("exit")) {
             isGameRunning = false;
             isAppRunning = false;
         } else if (!isGameRunning && input.startsWith("move")) {
             System.out.println("No game is running currently. \n");
         } else if (input.equals("commands")) {
-            System.out.println("Available commands: (start, scores, exit, commands, move ur/ul/dr/dl) \n");
+            System.out.println("Available commands: (start, scores, exit, saveandexit, load, commands, move ur/ul/dr/dl) \n");
         } else if (input.equals("scores")) {
             printHighScores();
+        } else if (input.equals("saveandexit")) {
+            if (!isGameRunning) {
+                System.out.println("No Game Is Running.");
+            } else {
+                saveGameState();
+            }
+            isGameRunning = false;
+            isAppRunning = false;
+
+        } else if (input.equals("load")) {
+            if (loadGameState()) {
+                isGameRunning = true;
+                mapPrinter.printMap(gameStateService.getMap());
+            } else {
+                System.out.println("No save found.");
+            }
         }
     }
 
@@ -137,4 +158,21 @@ public class GameService {
         System.out.println("");
     }
 
+    private void saveGameState() {
+        gameStateRepository.saveGameState(userName, gameStateService);
+    }
+
+    private boolean loadGameState() {
+        GameStateService gameState = gameStateRepository.getGameState(userName);
+
+        if (gameState != null) {
+            gameStateService = gameState;
+            return true;
+        }
+        return false;
+    }
+
+    private void deleteGameStateIfExists() {
+        gameStateRepository.deleteGameStateIfExists(userName);
+    }
 }

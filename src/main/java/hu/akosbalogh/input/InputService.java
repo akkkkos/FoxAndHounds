@@ -58,6 +58,10 @@ public class InputService {
             return "commands";
         } else if (input.equals("scores")) {
             return "scores";
+        } else if (input.equals("saveandexit")) {
+            return "saveandexit";
+        } else if (input.equals("load")) {
+            return "load";
         }
 
         return "unknown";
