@@ -6,7 +6,7 @@ package hu.akosbalogh;
         System.setIn(in);
  */
 
-import hu.akosbalogh.input.InputController;
+import hu.akosbalogh.input.InputService;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
@@ -14,17 +14,17 @@ import java.io.InputStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class InputControllerTest {
+public class InputServiceTest {
     @Test
     public void getUserInputShouldNotResultInException() {
         String input = "start\n";
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
 
-        InputController inputController = new InputController();
+        InputService inputService = new InputService();
 
         assertDoesNotThrow(() -> {
-            inputController.getUserInput();
+            inputService.getUserInput();
         });
     }
 
@@ -34,13 +34,13 @@ public class InputControllerTest {
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
 
-        InputController inputController = new InputController();
+        InputService inputService = new InputService();
 
-        assertEquals(inputController.getUserInput(), "unknown");
-        assertEquals(inputController.getUserInput(), "exit");
-        assertEquals(inputController.getUserInput(), "start");
-        assertEquals(inputController.getUserInput(), "move");
-        assertEquals(inputController.getUserInput(), "commands");
+        assertEquals(inputService.getUserInput(), "unknown");
+        assertEquals(inputService.getUserInput(), "exit");
+        assertEquals(inputService.getUserInput(), "start");
+        assertEquals(inputService.getUserInput(), "move");
+        assertEquals(inputService.getUserInput(), "commands");
     }
 
     @Test
@@ -49,17 +49,17 @@ public class InputControllerTest {
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
 
-        InputController inputController = new InputController();
-        int mapSize = inputController.getMapSizeFromUser();
+        InputService inputService = new InputService();
+        int mapSize = inputService.getMapSizeFromUser();
         assertEquals(mapSize, 8);
     }
 
     @Test
     public void isUserMoveCorrectFormatShouldReturnCorrectly() {
-        InputController inputController = new InputController();
-        assertFalse(inputController.isUserMoveCorrectFormat("testtesttesttesttest"));
-        assertFalse(inputController.isUserMoveCorrectFormat("move ar"));
-        assertFalse(inputController.isUserMoveCorrectFormat("move ua"));
-        assertTrue(inputController.isUserMoveCorrectFormat("move ur"));
+        InputService inputService = new InputService();
+        assertFalse(inputService.isUserMoveCorrectFormat("testtesttesttesttest"));
+        assertFalse(inputService.isUserMoveCorrectFormat("move ar"));
+        assertFalse(inputService.isUserMoveCorrectFormat("move ua"));
+        assertTrue(inputService.isUserMoveCorrectFormat("move ur"));
     }
 }

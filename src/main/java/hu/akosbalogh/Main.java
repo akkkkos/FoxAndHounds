@@ -1,12 +1,6 @@
 package hu.akosbalogh;
 
-import hu.akosbalogh.data.ScoreRepository;
-import hu.akosbalogh.game.GameController;
-import hu.akosbalogh.game.RandomController;
-import hu.akosbalogh.input.InputController;
-import hu.akosbalogh.map.MapController;
-import hu.akosbalogh.map.MapPrinter;
-import hu.akosbalogh.map.validation.MapValidator;
+import hu.akosbalogh.game.GameService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -23,7 +17,7 @@ public class Main {
     public static void main(String[] args) throws Exception {
         ApplicationContext applicationContext = new AnnotationConfigApplicationContext("hu.akosbalogh");
 
-        GameController gameController = applicationContext.getBean(GameController.class);
-        gameController.start();
+        GameService gameService = applicationContext.getBean(GameService.class);
+        gameService.start();
     }
 }

@@ -1,4 +1,4 @@
-package hu.akosbalogh.game;
+package hu.akosbalogh.input;
 
 import java.util.Random;
 
@@ -8,10 +8,10 @@ import org.springframework.stereotype.Component;
  * RandomController class for handling randomized returns.
  */
 @Component
-public class RandomController {
+public class RandomWrapper {
     private final Random rand;
 
-    public RandomController() {
+    public RandomWrapper() {
         this.rand = new Random();
     }
 

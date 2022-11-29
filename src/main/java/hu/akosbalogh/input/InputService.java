@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
  * Input controller for Fox and Hounds Game.
  */
 @Service
-public class InputController {
+public class InputService {
     private final Scanner scanner;
 
-    public InputController() {
+    public InputService() {
         scanner = new Scanner(System.in);
     }
 

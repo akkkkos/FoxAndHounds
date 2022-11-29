@@ -1,10 +1,10 @@
 package hu.akosbalogh;
 
 import hu.akosbalogh.data.ScoreRepository;
-import hu.akosbalogh.game.GameController;
-import hu.akosbalogh.game.RandomController;
-import hu.akosbalogh.input.InputController;
-import hu.akosbalogh.map.MapController;
+import hu.akosbalogh.game.GameService;
+import hu.akosbalogh.input.RandomWrapper;
+import hu.akosbalogh.input.InputService;
+import hu.akosbalogh.map.MapService;
 import hu.akosbalogh.map.MapPrinter;
 import hu.akosbalogh.map.validation.MapValidator;
 import org.junit.jupiter.api.Test;
@@ -15,13 +15,13 @@ import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-public class GameControllerTest {
-    RandomController randomController = new RandomController();
+public class GameServiceTest {
+    RandomWrapper randomWrapper = new RandomWrapper();
     MapValidator mapValidator = new MapValidator();
     MapPrinter mapPrinter = new MapPrinter();
     ScoreRepository scoreRepository = new ScoreRepository();
 
-    public GameControllerTest() throws SQLException {
+    public GameServiceTest() throws SQLException {
     }
 
     @Test
@@ -30,11 +30,12 @@ public class GameControllerTest {
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
 
-        MapController mapController = new MapController(randomController);
-        InputController inputController = new InputController();
-        GameController gameController = new GameController(mapController, inputController, mapValidator, mapPrinter, scoreRepository);
+        MapService mapService = new MapService(randomWrapper);
+        InputService inputService = new InputService();
+        GameService gameService = new GameService(mapService, inputService, mapValidator, mapPrinter, scoreRepository);
 
-        assertDoesNotThrow(() -> {gameController.start();});
+        assertDoesNotThrow(() -> {
+            gameService.start();});
     }
 
     @Test
@@ -43,13 +44,14 @@ public class GameControllerTest {
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
 
-        MapController mapController = new MapController(randomController);
-        InputController inputController = new InputController();
+        MapService mapService = new MapService(randomWrapper);
+        InputService inputService = new InputService();
 
-        GameController gameController = new GameController(mapController, inputController, mapValidator, mapPrinter, scoreRepository);
+        GameService gameService = new GameService(mapService, inputService, mapValidator, mapPrinter, scoreRepository);
 
 
-        assertDoesNotThrow(() -> {gameController.start();});
+        assertDoesNotThrow(() -> {
+            gameService.start();});
     }
 
     @Test
@@ -67,11 +69,12 @@ public class GameControllerTest {
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
 
-        MapController mapController = new MapController(randomController);
-        InputController inputController = new InputController();
-        GameController gameController = new GameController(mapController, inputController, mapValidator, mapPrinter, scoreRepository);
+        MapService mapService = new MapService(randomWrapper);
+        InputService inputService = new InputService();
+        GameService gameService = new GameService(mapService, inputService, mapValidator, mapPrinter, scoreRepository);
 
 
-        assertDoesNotThrow(() -> {gameController.start();});
+        assertDoesNotThrow(() -> {
+            gameService.start();});
     }
 }

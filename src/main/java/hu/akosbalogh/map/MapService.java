@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Objects;
 
 import hu.akosbalogh.exceptions.MapInitializationException;
-import hu.akosbalogh.game.RandomController;
+import hu.akosbalogh.input.RandomWrapper;
 import hu.akosbalogh.map.model.Map;
 import hu.akosbalogh.map.validation.MapValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,16 +14,16 @@ import org.springframework.stereotype.Service;
  * Map Controller for Fox and Hounds game.
  */
 @Service
-public class MapController {
+public class MapService {
 
-    private final RandomController randomController;
+    private final RandomWrapper randomWrapper;
     private Map map;
     private int[][] houndPositions;
     private int[] foxPosition;
 
     @Autowired
-    public MapController(RandomController randomController) {
-        this.randomController = randomController;
+    public MapService(RandomWrapper randomWrapper) {
+        this.randomWrapper = randomWrapper;
     }
 
     /**
@@ -166,8 +166,8 @@ public class MapController {
             boolean validMoveMade = false;
 
             while (!validMoveMade) {
-                int randomHoundIndex = randomController.getRandomHound(numberOfHounds);
-                int randomHoundMove = randomController.getRandomHoundMove();
+                int randomHoundIndex = randomWrapper.getRandomHound(numberOfHounds);
+                int randomHoundMove = randomWrapper.getRandomHoundMove();
                 int randomHoundsRowIndex = houndPositions[randomHoundIndex][0];
                 int randomHoundsColumnIndex = houndPositions[randomHoundIndex][1];
 
@@ -204,7 +204,7 @@ public class MapController {
     @Override
     public String toString() {
         return "MapController{" +
-                "randomController=" + randomController +
+                "randomController=" + randomWrapper +
                 ", map=" + map +
                 ", houndPositions=" + Arrays.toString(houndPositions) +
                 ", foxPosition=" + Arrays.toString(foxPosition) +
@@ -219,7 +219,7 @@ public class MapController {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        MapController that = (MapController) o;
+        MapService that = (MapService) o;
         return map.equals(that.map);
     }
 
