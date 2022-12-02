@@ -1,8 +1,5 @@
 package hu.akosbalogh.game;
 
-import java.util.Arrays;
-import java.util.Objects;
-
 import hu.akosbalogh.exceptions.MapInitializationException;
 import hu.akosbalogh.input.RandomWrapper;
 import hu.akosbalogh.map.model.Map;

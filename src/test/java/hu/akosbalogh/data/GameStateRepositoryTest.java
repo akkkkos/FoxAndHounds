@@ -1,10 +1,6 @@
-package hu.akosbalogh;
+package hu.akosbalogh.data;
 
-import hu.akosbalogh.data.GameStateRepository;
 import hu.akosbalogh.game.GameStateService;
-import hu.akosbalogh.map.model.PersistableGameState;
-import jakarta.xml.bind.Marshaller;
-import jakarta.xml.bind.Unmarshaller;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,20 +11,13 @@ import java.io.File;
 import java.io.FileOutputStream;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class GameStateRepositoryTest {
 
     @Mock
-    public Marshaller marshaller;
-    @Mock
-    public Unmarshaller unmarshaller;
-    @Mock
     public GameStateService gameStateService;
-    @Mock
-    public PersistableGameState persistableGameState;
 
     public GameStateRepository gameStateRepository = new GameStateRepository();
 
@@ -55,21 +44,27 @@ public class GameStateRepositoryTest {
         fileOutputStream.write("bad,data".getBytes());
         fileOutputStream.close();
 
-        assertDoesNotThrow(() -> {
-           gameStateRepository.saveGameState("randomUsername", gameStateService);
-        });
-        assertThrows(Exception.class, () -> {
-            gameStateRepository.getGameState("randomUsername");
-        });
+        assertDoesNotThrow(() -> gameStateRepository.saveGameState("randomUsername", gameStateService));
+        assertThrows(Exception.class, () -> gameStateRepository.getGameState("randomUsername"));
     }
 
     @Test
     public void dontDeleteFileIfItDoesNotExist() {
+        File file = new File("state_randomUsername.xml");
+
+        assertFalse(file.exists());
         gameStateRepository.deleteGameStateIfExists("randomUsername");
+        assertFalse(file.exists());
     }
 
     @Test
     public void getGameStateShouldReturnNullIfFileNotFound() {
-        gameStateRepository.getGameState("randomUsername");
+        File file = new File("state_randomUsername.xml");
+
+        assertFalse(file.exists());
+
+        GameStateService result = gameStateRepository.getGameState("randomUsername");
+
+        assertNull(result);
     }
 }

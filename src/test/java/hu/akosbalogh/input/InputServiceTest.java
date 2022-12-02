@@ -1,12 +1,5 @@
-package hu.akosbalogh;
+package hu.akosbalogh.input;
 
-/*
-        String input = "ur";
-        InputStream in = new ByteArrayInputStream(input.getBytes());
-        System.setIn(in);
- */
-
-import hu.akosbalogh.input.InputService;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;

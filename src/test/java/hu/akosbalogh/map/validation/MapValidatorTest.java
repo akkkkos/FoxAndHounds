@@ -1,9 +1,6 @@
-package hu.akosbalogh;
+package hu.akosbalogh.map.validation;
 
-import hu.akosbalogh.input.RandomWrapper;
 import hu.akosbalogh.map.model.Map;
-import hu.akosbalogh.game.GameStateService;
-import hu.akosbalogh.map.validation.MapValidator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -11,7 +8,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class MapValidatorTest {

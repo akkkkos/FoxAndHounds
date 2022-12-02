@@ -15,10 +15,14 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class ScoreRepository {
-    Connection connection;
+    private final Connection connection;
 
     public ScoreRepository() throws SQLException {
         connection = DriverManager.getConnection("jdbc:h2:tcp://localhost/~/test", "sa", "");
+    }
+
+    public ScoreRepository(Connection connection) {
+        this.connection = connection;
     }
 
     /**

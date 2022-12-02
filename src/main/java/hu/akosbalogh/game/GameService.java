@@ -1,5 +1,7 @@
 package hu.akosbalogh.game;
 
+import java.sql.SQLException;
+
 import hu.akosbalogh.data.GameStateRepository;
 import hu.akosbalogh.data.ScoreRepository;
 import hu.akosbalogh.input.InputService;
@@ -143,7 +145,7 @@ public class GameService {
         }
     }
 
-    private void saveWinToDb() {
+    private void saveWinToDb() throws SQLException {
         scoreRepository.increaseScore(userName);
     }
 

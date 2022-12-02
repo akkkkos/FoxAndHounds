@@ -1,11 +1,8 @@
-package hu.akosbalogh;
+package hu.akosbalogh.game;
 
 import hu.akosbalogh.data.GameStateRepository;
 import hu.akosbalogh.data.ScoreRepository;
-import hu.akosbalogh.game.GameService;
-import hu.akosbalogh.input.RandomWrapper;
 import hu.akosbalogh.input.InputService;
-import hu.akosbalogh.game.GameStateService;
 import hu.akosbalogh.map.MapPrinter;
 import hu.akosbalogh.map.model.Map;
 import hu.akosbalogh.map.validation.MapValidator;
@@ -14,20 +11,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.sql.SQLException;
-
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class GameServiceTest {
-    @Mock
-    private RandomWrapper randomWrapper;
     @Mock
     private MapValidator mapValidator;
     @Mock
@@ -45,17 +34,9 @@ public class GameServiceTest {
 
     private GameService gameService;
 
-    private final char[][] defaultCharMap4x4 = {
-            {'X','H','X','H'},
-            {'O','X','O','X'},
-            {'X','O','X','O'},
-            {'F','X','O','X'}
-    };
-
-
     private final String[][] highScores = {
             {"Ákos","2"},
-            {"Dávid","1"}
+            {"Balázs","1"}
     };
 
     @BeforeEach

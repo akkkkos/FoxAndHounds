@@ -1,6 +1,5 @@
-package hu.akosbalogh;
+package hu.akosbalogh.input;
 
-import hu.akosbalogh.input.RandomWrapper;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
