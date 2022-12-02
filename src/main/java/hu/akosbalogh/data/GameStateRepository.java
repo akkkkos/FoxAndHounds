@@ -4,10 +4,7 @@ import java.io.File;
 
 import hu.akosbalogh.game.GameStateService;
 import hu.akosbalogh.map.model.PersistableGameState;
-import hu.akosbalogh.map.validation.GameStateValidator;
-import hu.akosbalogh.map.validation.MapValidator;
 import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Marshaller;
 import jakarta.xml.bind.Unmarshaller;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +15,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class GameStateRepository {
-    //private final GameStateValidator gameStateValidator;
-    //private final MapValidator mapValidator;
     private final Marshaller marshaller;
     private final Unmarshaller unmarshaller;
 

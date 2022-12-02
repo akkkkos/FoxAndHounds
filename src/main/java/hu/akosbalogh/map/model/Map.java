@@ -72,9 +72,4 @@ public class Map {
         Map map = (Map) o;
         return Arrays.deepEquals(mapAsChars, map.mapAsChars);
     }
-
-    @Override
-    public int hashCode() {
-        return Arrays.deepHashCode(mapAsChars);
-    }
 }

@@ -5,62 +5,106 @@ import hu.akosbalogh.map.model.Map;
 import hu.akosbalogh.game.GameStateService;
 import hu.akosbalogh.map.validation.MapValidator;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 public class MapValidatorTest {
-    MapValidator mapValidator = new MapValidator();
-    RandomWrapper randomWrapper = new RandomWrapper();
-    GameStateService gameStateService = new GameStateService(randomWrapper);
+
+    private final MapValidator mapValidator = new MapValidator();
+
+    @Mock
+    private Map map;
+
+    private final char[][] mapFoxColumn = new char[][]{
+            {'X','O','X','O'},
+            {'H','X','O','X'},
+            {'X','H','X','F'},
+            {'O','X','O','X'}
+    };
+
+    private final char[][] mapHoundWinner = new char[][]{
+            {'X','O','X','O'},
+            {'H','X','O','X'},
+            {'X','H','X','O'},
+            {'F','X','O','X'}
+    };
+    private final char[][] mapNotHoundWinner = new char[][]{
+            {'X','O','X','O'},
+            {'H','X','H','X'},
+            {'X','O','X','O'},
+            {'F','X','O','X'}
+    };
+
+    private final char[][] mapFoxWinner = new char[][]{
+            {'X','O','X','F'},
+            {'H','X','O','X'},
+            {'X','H','X','O'},
+            {'O','X','O','X'}
+    };
+    private final char[][] mapNotFoxWinner = new char[][]{
+            {'X','O','X','O'},
+            {'H','X','H','X'},
+            {'X','O','X','F'},
+            {'O','X','O','X'}
+    };
 
     @Test
     public void searchFoxColumnIndexShouldReturnCorrectColumnIndex() throws Exception {
-        gameStateService.buildNewMap(8);
-        gameStateService.moveFox("ur");
-        gameStateService.moveFox("ur");
+        given(map.getMapAsChars()).willReturn(mapFoxColumn);
+        given(map.getNumberOfColumns()).willReturn(4);
+        given(map.getNumberOfRows()).willReturn(4);
 
-        int foxColumnIndex = mapValidator.searchFoxColumnIndex(gameStateService.getMap());
+        int result = mapValidator.searchFoxColumnIndex(map);
 
-        assertEquals(foxColumnIndex, gameStateService.getFoxPosition()[1]);
-        assertEquals(gameStateService.getMap().getMapAsChars()[5][foxColumnIndex],'F');
+        assertEquals(result, 3);
     }
 
     @Test
-    public void isHoundWinnerShouldReturnCorrectly() throws Exception {
-        gameStateService.buildNewMap(6);
+    public void isHoundWinnerShouldReturnFalseWhenCorrect() throws Exception {
+        given(map.getMapAsChars()).willReturn(mapNotHoundWinner);
+        given(map.getNumberOfColumns()).willReturn(4);
+        given(map.getNumberOfRows()).willReturn(4);
 
-        assertFalse(mapValidator.isHoundWinner(gameStateService.getMap()));
-
-        Map oldMap = gameStateService.getMap();
-        char[][] oldMapAsChar = oldMap.getMapAsChars();
-        oldMapAsChar[4][1] = 'H';
-        oldMap.setMapAsChars(oldMapAsChar);
-
-        assertTrue(mapValidator.isHoundWinner(oldMap));
+        assertFalse(mapValidator.isHoundWinner(map));
     }
 
     @Test
-    public void isFoxWinnerShouldReturnCorrectly() throws Exception {
-        gameStateService.buildNewMap(6);
+    public void isHoundWinnerShouldReturnTrueWhenCorrect() throws Exception {
+        given(map.getMapAsChars()).willReturn(mapHoundWinner);
+        given(map.getNumberOfColumns()).willReturn(4);
+        given(map.getNumberOfRows()).willReturn(4);
 
-        assertFalse(mapValidator.isFoxWinner(gameStateService.getMap()));
+        assertTrue(mapValidator.isHoundWinner(map));
+    }
 
-        Map oldMap = gameStateService.getMap();
-        char[][] oldMapAsChar = oldMap.getMapAsChars();
-        oldMapAsChar[0][1] = 'F';
-        oldMap.setMapAsChars(oldMapAsChar);
+    @Test
+    public void isFoxWinnerShouldReturnTrueWhenCorrect() throws Exception {
+        given(map.getMapAsChars()).willReturn(mapFoxWinner);
+        given(map.getNumberOfColumns()).willReturn(4);
 
-        assertTrue(mapValidator.isFoxWinner(oldMap));
+        assertTrue(mapValidator.isFoxWinner(map));
+    }
+
+    @Test
+    public void isFoxWinnerShouldReturnFalseWhenCorrect() throws Exception {
+        given(map.getMapAsChars()).willReturn(mapNotFoxWinner);
+        given(map.getNumberOfColumns()).willReturn(4);
+
+        assertFalse(mapValidator.isFoxWinner(map));
     }
 
     @Test
     public void searchingForFoxWithoutValidMapShouldResultInException() {
-        char[][] charMap = new char[0][0];
-        Map map = new Map(charMap);
+        given(map.getNumberOfRows()).willReturn(0);
 
         assertThrows(Exception.class, () -> {
            mapValidator.searchFoxRowIndex(map);
         });
     }
-
 }

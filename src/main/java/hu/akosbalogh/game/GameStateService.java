@@ -224,11 +224,8 @@ public class GameStateService {
 
     @Override
     public String toString() {
-        return "MapController{" +
-                "randomController=" + randomWrapper +
-                ", map=" + map +
-                ", houndPositions=" + Arrays.toString(houndPositions) +
-                ", foxPosition=" + Arrays.toString(foxPosition) +
+        return "GameStateService{" +
+                map.toString() +
                 '}';
     }
 
@@ -242,10 +239,5 @@ public class GameStateService {
         }
         GameStateService that = (GameStateService) o;
         return map.equals(that.map);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(map);
     }
 }

@@ -60,7 +60,7 @@ public class MapValidator {
      */
     public boolean isFoxWinner(Map map) {
 
-        for (int i = 1; i < map.getNumberOfColumns() - 1; i += 2) {
+        for (int i = 0; i < map.getNumberOfColumns(); i++) {
             if (map.getMapAsChars()[0][i] == 'F') {
                 return true;
             }
